@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e4e9f2" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#252932" media="(prefers-color-scheme:dark)">
+<title>FORJA · Constructor de manuales de capacitación</title>
+<script>
+/* Aplica el tema guardado ANTES de renderizar para evitar FOUC */
+try{
+  var t = localStorage.getItem('forja-theme');
+  if(t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+}catch(e){}
+</script>
+<style>
+/* ============================================================
+   FORJA · Neumorphism Design System
+   ============================================================ */
+:root{
+  --bg:#e4e9f2;
+  --tx:#3b4659;
+  --mu:#7a869c;
+  --ac:#4f62f5;
+  --ac2:#8c98ff;
+  --s1:#ffffff;
+  --s2:#b8c2d4;
+  --ok:#17915f;
+  --wa:#c67a10;
+  --dg:#d0404c;
+
+  --oxs:2px 2px 5px var(--s2),-2px -2px 5px var(--s1);
+  --os:4px 4px 9px var(--s2),-4px -4px 9px var(--s1);
+  --o:7px 7px 16px var(--s2),-7px -7px 16px var(--s1);
+  --ixs:inset 2px 2px 4px var(--s2),inset -2px -2px 4px var(--s1);
+  --is:inset 3px 3px 6px var(--s2),inset -3px -3px 6px var(--s1);
+  --i:inset 5px 5px 10px var(--s2),inset -5px -5px 10px var(--s1);
+
+  --r1:12px;
+  --r2:16px;
+  --r3:22px;
+  --r4:28px;
+
+  --px:clamp(14px,4vw,22px);
+  --gap:clamp(10px,3vw,14px);
+
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#252932;--tx:#dbe1ee;--mu:#8f99ae;--ac:#8c98ff;--ac2:#b0b9ff;
+    --s1:#30353f;--s2:#1a1d23;--ok:#3ccf91;--wa:#f0a63c;--dg:#ff707b;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#252932;--tx:#dbe1ee;--mu:#8f99ae;--ac:#8c98ff;--ac2:#b0b9ff;
+  --s1:#30353f;--s2:#1a1d23;--ok:#3ccf91;--wa:#f0a63c;--dg:#ff707b;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+*{-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:80px}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100dvh;
+  overflow-x:hidden;   /* fallback */
+  overflow-x:clip;     /* no crea scroll container → sticky sigue funcionando */
+}
+
+.ic{
+  width:20px;height:20px;flex:none;
+  fill:none;stroke:currentColor;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+}
+
+/* ---------- Header ---------- */
+.hd{
+  position:sticky;top:0;z-index:20;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:calc(env(safe-area-inset-top,0px) + 12px) var(--px) 12px;
+}
+.br{display:flex;align-items:center;gap:12px;min-width:0}
+.lg{
+  width:44px;height:44px;border-radius:14px;
+  box-shadow:var(--o);
+  display:grid;place-items:center;color:var(--ac);flex:none;
+}
+.br b{display:block;font-size:17px;line-height:1.15;letter-spacing:-.01em}
+.br span{font-size:12px;color:var(--mu);display:block;margin-top:1px}
+
+/* ---------- Layout ---------- */
+.wrap{
+  max-width:720px;margin:0 auto;
+  padding:8px var(--px) 140px;
+}
+
+/* ---------- Cards ---------- */
+.card{
+  background:var(--bg);
+  border-radius:var(--r4);
+  box-shadow:var(--o);
+  padding:var(--px);
+  margin-bottom:18px;
+}
+h2.t{font-size:16px;margin:0 0 4px;letter-spacing:-.01em}
+h2.t + .sub{margin-top:0}
+.sub{color:var(--mu);font-size:13px;margin:0 0 12px}
+
+/* ---------- Botones ---------- */
+.btn{
+  border:0;background:var(--bg);color:var(--tx);
+  box-shadow:var(--os);border-radius:14px;
+  padding:10px 14px;
+  font:600 13px/1.2 inherit;
+  display:inline-flex;gap:6px;align-items:center;justify-content:center;
+  cursor:pointer;min-height:44px;
+  transition:box-shadow .15s ease,color .15s ease,transform .1s ease;
+}
+.btn:active{transform:scale(.98)}
+.btn:active,.btn.on{box-shadow:var(--is);color:var(--ac)}
+.btn:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+.mh:focus-visible{
+  outline:2px solid var(--ac);
+  outline-offset:3px;
+}
+.btn.sm{min-height:44px;padding:8px 12px;font-size:12.5px}
+.btn.rd{width:44px;padding:0;border-radius:50%}
+.btn.dg{color:var(--dg)}
+.btn.pr{color:var(--ac)}
+.btn.w{width:100%}
+
+/* ---------- Formularios ---------- */
+label{
+  display:block;
+  font-size:12px;font-weight:700;color:var(--mu);
+  letter-spacing:.02em;
+  margin:16px 0 6px;
+}
+label:first-child{margin-top:0}
+input,textarea{
+  width:100%;border:0;outline:0;
+  background:var(--bg);color:var(--tx);
+  box-shadow:var(--is);
+  border-radius:14px;
+  padding:12px 14px;
+  font:16px/1.45 inherit;   /* 16px evita el zoom en iOS */
+  min-height:48px;
+  margin-bottom:6px;
+  transition:box-shadow .18s ease;
+}
+input::placeholder,textarea::placeholder{color:var(--mu);opacity:.65}
+textarea{resize:vertical;min-height:96px;line-height:1.55}
+input:focus,textarea:focus{box-shadow:var(--i)}
+
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.seg .btn{flex:1 1 0;min-width:0}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1 1 140px;min-width:0}
+
+/* ---------- Stats + progreso ---------- */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;margin-bottom:16px;
+}
+.stat{
+  border-radius:18px;box-shadow:var(--os);
+  padding:14px 6px;text-align:center;
+}
+.stat b{display:block;font-size:22px;color:var(--ac);line-height:1.1;letter-spacing:-.02em}
+.stat span{font-size:11px;color:var(--mu);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.pl{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:var(--mu);font-weight:600}
+.pl b{color:var(--tx)}
+.bar{
+  height:16px;border-radius:10px;
+  box-shadow:var(--is);padding:3px;
+}
+.bar i{
+  display:block;height:100%;min-width:8px;border-radius:8px;
+  background:linear-gradient(90deg,var(--ac),var(--ac2));
+  transition:width .4s cubic-bezier(.22,1,.36,1);
+}
+
+/* ---------- Módulos ---------- */
+.mh{
+  display:flex;align-items:center;gap:12px;
+  cursor:pointer;border-radius:16px;
+  padding:2px 0;
+}
+.num{
+  width:42px;height:42px;border-radius:50%;
+  box-shadow:var(--is);
+  display:grid;place-items:center;
+  font-weight:800;color:var(--ac);
+  font-size:15px;letter-spacing:-.02em;
+  flex:none;
+}
+.mh div{flex:1;min-width:0}
+.mh b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px;letter-spacing:-.01em}
+.mh small{color:var(--mu);font-size:12px;display:block;margin-top:2px}
+.chev{transition:transform .25s cubic-bezier(.22,1,.36,1);color:var(--mu)}
+.open .chev{transform:rotate(180deg)}
+.mb{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--s2)}
+.open .mb{display:block}
+
+/* ---------- Bloque ---------- */
+.blk{
+  border-radius:18px;box-shadow:var(--is);
+  padding:12px;margin:14px 0;
+}
+.blk input,
+.blk textarea{box-shadow:var(--os);margin-bottom:0}
+.blk input:focus,
+.blk textarea:focus{box-shadow:var(--i)}
+.bh{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:6px;margin-bottom:10px;
+}
+.bh > span:last-child{display:flex;gap:6px}
+.tag{
+  font-size:11.5px;font-weight:800;color:var(--ac);
+  letter-spacing:.08em;text-transform:uppercase;
+  padding-left:6px;
+}
+
+/* ---------- Fila de "agregar bloque" ---------- */
+.add{
+  display:flex;gap:8px;
+  overflow-x:auto;
+  padding:6px 4px 12px;margin:0 -4px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.add::-webkit-scrollbar{display:none}
+.add .btn{flex:none}
+
+.ma{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;
+  margin-top:6px;
+}
+
+/* ---------- Nav inferior ---------- */
+.nav{
+  position:fixed;left:0;right:0;bottom:0;z-index:20;
+  padding:16px var(--px) calc(12px + env(safe-area-inset-bottom,0px));
+  background:linear-gradient(transparent,var(--bg) 42%);
+  pointer-events:none;
+}
+.ni{
+  pointer-events:auto;
+  max-width:420px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  background:var(--bg);border-radius:26px;
+  box-shadow:var(--o);
+  padding:8px;
+}
+.ni button{
+  border:0;background:var(--bg);color:var(--mu);
+  border-radius:20px;
+  padding:8px 4px;
+  font:600 11.5px/1.15 inherit;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  min-height:52px;
+  cursor:pointer;
+  transition:box-shadow .18s ease,color .18s ease;
+}
+.ni button.on{box-shadow:var(--is);color:var(--ac)}
+.ni button .ic{width:22px;height:22px}
+
+/* ---------- Toast ---------- */
+.toast{
+  position:fixed;left:50%;
+  bottom:calc(110px + env(safe-area-inset-bottom,0px));
+  transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;
+  background:var(--bg);
+  box-shadow:var(--o);
+  border-radius:18px;
+  padding:8px 8px 8px 16px;
+  display:flex;gap:10px;align-items:center;
+  font-size:13px;font-weight:600;
+  z-index:30;
+  transition:opacity .25s ease,transform .25s cubic-bezier(.22,1,.36,1);
+  max-width:92vw;
+}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+
+/* ---------- Vista previa ---------- */
+.tools{
+  display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;
+}
+.tools .btn{flex:1 1 160px}
+.paper{
+  background:var(--bg);
+  border-radius:var(--r4);
+  box-shadow:var(--o);
+  padding:clamp(20px,5vw,28px);
+}
+.paper h1{font-size:26px;line-height:1.15;margin:8px 0;letter-spacing:-.02em}
+.paper h2{
+  font-size:18px;margin:28px 0 10px;
+  display:flex;gap:10px;align-items:center;
+  letter-spacing:-.01em;
+}
+.paper h2 i{
+  font-style:normal;
+  width:34px;height:34px;border-radius:50%;
+  box-shadow:var(--is);
+  display:grid;place-items:center;
+  font-size:14px;color:var(--ac);font-weight:800;
+  flex:none;
+}
+.cover{
+  border-radius:20px;box-shadow:var(--is);
+  padding:20px;
+}
+.cover > small{
+  color:var(--ac);font-weight:800;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+}
+.cover > p{color:var(--mu);margin:6px 0 16px}
+.mg{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  font-size:14px;
+}
+.mg > div > span{
+  display:block;font-size:11px;color:var(--mu);
+  font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  margin-bottom:2px;
+}
+.toc{padding:0;margin:0;list-style:none;counter-reset:c}
+.toc li{
+  counter-increment:c;
+  display:flex;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--s2);
+}
+.toc li:before{content:counter(c) ".";color:var(--ac);font-weight:800;min-width:20px}
+.toc em{margin-left:auto;font-style:normal;color:var(--mu);font-size:13px;font-weight:600}
+
+.paper ol,.paper ul{padding-left:22px}
+.paper li{margin:6px 0}
+.ck{list-style:none;padding-left:0 !important}
+.ck li:before{
+  content:"";display:inline-block;
+  width:14px;height:14px;border-radius:4px;
+  box-shadow:var(--is);
+  margin-right:10px;vertical-align:-2px;
+}
+
+.co{
+  border-radius:16px;box-shadow:var(--is);
+  padding:12px 14px;margin:14px 0;
+  border-left:5px solid var(--ac);
+}
+.co b{display:block;margin-bottom:2px}
+.co.tip{border-color:var(--ok)}
+.co.warn{border-color:var(--wa)}
+.co.danger{border-color:var(--dg)}
+.co ul{margin:4px 0}
+
+.qz{
+  border-radius:18px;box-shadow:var(--os);
+  padding:14px;margin:14px 0;
+}
+.op{
+  display:flex;gap:10px;align-items:center;
+  border-radius:12px;padding:8px 10px;margin-top:8px;
+  box-shadow:var(--is);
+}
+.op i{
+  font-style:normal;font-weight:800;
+  width:26px;height:26px;border-radius:50%;
+  box-shadow:var(--os);
+  display:grid;place-items:center;
+  font-size:12px;flex:none;
+  color:var(--mu);
+}
+.op.ok{color:var(--ok);font-weight:700}
+.op.ok i{color:var(--ok)}
+
+.empty{
+  text-align:center;color:var(--mu);
+  padding:24px 8px;font-size:13.5px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
+
+@media print{
+  :root:root:root{
+    --bg:#fff;--tx:#111;--mu:#555;--ac:#2f43d0;
+    --s1:#fff;--s2:#ddd;
+  }
+  .hd,.nav,.tools,.toast{display:none !important}
+  .wrap{padding:0;max-width:none}
+  .paper{box-shadow:none;padding:0}
+  .co,.qz,.cover{break-inside:avoid}
+  *{box-shadow:none !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cover,.co,.qz,.op{border:1px solid #ccc}
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="br">
+    <div class="lg" id="lg" aria-hidden="true"></div>
+    <div>
+      <b>FORJA</b>
+      <span>Constructor de manuales</span>
+    </div>
+  </div>
+  <button class="btn rd" type="button" data-a="theme" aria-label="Cambiar tema" aria-pressed="false" id="th"></button>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<nav class="nav" aria-label="Secciones">
+  <div class="ni">
+    <button type="button" data-a="tab" data-v="meta" aria-label="Datos del manual"></button>
+    <button type="button" data-a="tab" data-v="mods" aria-label="Módulos"></button>
+    <button type="button" data-a="tab" data-v="prev" aria-label="Vista previa"></button>
+  </div>
+</nav>
+
+<div class="toast" id="ts" role="status" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   FORJA · Lógica de la aplicación
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2,9);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* Iconos */
+const IC = {
+  book:'M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5zM8 7h8M8 11h6',
+  layers:'M12 2 2 7l10 5 10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+  eye:'M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+  up:'M18 15l-6-6-6 6',
+  down:'M6 9l6 6 6-6',
+  plus:'M12 5v14M5 12h14',
+  trash:'M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14',
+  copy:'M9 9h11v11H9zM5 15V5h10',
+  moon:'M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z',
+  sun:'M12 3v2M12 19v2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M3 12h2M19 12h2M5.6 18.4l1.4-1.4M17 7l1.4-1.4M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z',
+  print:'M6 9V3h12v6M6 18H4v-7h16v7h-2M6 14h12v7H6z'
+};
+const ic = n => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+
+/* Constantes de dominio */
+const KEY = 'forja-manuales-v1';
+const THEME_KEY = 'forja-theme';
+const KIND = { text:'Texto', steps:'Pasos', note:'Nota destacada', check:'Checklist', quiz:'Evaluación' };
+const TONE = { info:'Info', tip:'Consejo', warn:'Aviso', danger:'Peligro' };
+const LV = ['Básico','Intermedio','Avanzado'];
+const AZ = 'ABCDEFGH';
+
+/* Utilidades */
+const L = s => String(s || '').split('\n').map(x => x.trim()).filter(Boolean);
+const dur = n => {
+  const m = Math.max(0, Math.round(Number(n) || 0));
+  return m >= 60
+    ? Math.floor(m/60) + ' h' + (m%60 ? ' ' + m%60 + ' min' : '')
+    : m + ' min';
+};
+
+/* Factories */
+const B = (k, o={}) => ({ id:uid(), k, v:'', tone:'info', q:'', ans:1, ...o });
+const M = (o={}) => ({ id:uid(), t:'Nuevo módulo', d:15, open:true, obj:'', blocks:[], ...o });
+
+/* Ejemplo inicial — Manual de inducción para Asistente de Educación Preescolar */
+const seed = () => ({
+  meta:{
+    title:'Asistente de Educación Preescolar: Guía de Inducción',
+    sub:'Manual operativo y pedagógico para el equipo auxiliar del Centro Escolar Balam',
+    author:'Dirección Académica · Centro Escolar Balam',
+    ver:'1.0',
+    aud:'Asistentes de educación preescolar de nuevo ingreso',
+    level:'Básico',
+    goal:'Que el asistente de educación preescolar del Centro Escolar Balam integre, en un periodo de cuatro semanas, las rutinas, protocolos y estrategias pedagógicas necesarias para acompañar a los niños de 3 a 6 años con calidez, seguridad y profesionalismo, en coordinación con la educadora titular y en alineación con el Proyecto Educativo Balam.'
+  },
+  mods:[
+
+    /* ---------- 1 ---------- */
+    M({
+      t:'Bienvenida a Balam: identidad y cultura', d:25, open:true,
+      obj:'Reconocer la misión, visión y valores del Centro Escolar Balam\nIdentificar el lugar del asistente dentro del Proyecto Educativo Balam\nFirmar y comprender el código de ética y confidencialidad',
+      blocks:[
+        B('text',{v:'Bienvenido al Centro Escolar Balam. Formas parte de un equipo que acompaña a los niños en una de las etapas más decisivas de su vida: los primeros años de escolarización.\n\nBalam significa "jaguar" en lengua maya. Elegimos ese nombre porque el jaguar observa con atención, actúa con calma y cuida su territorio. Eso es exactamente lo que esperamos de cada asistente: mirada atenta, presencia serena y cuidado del espacio donde los niños crecen.\n\nDurante las próximas cuatro semanas recorrerás este manual. No es un documento para memorizar: es una guía viva que iremos revisando juntos.'}),
+        B('note',{tone:'tip',v:'Tu primera semana es de observación. Antes de proponer cambios, mira, escucha y pregunta. El equipo valora a quien aprende el ritmo antes de intervenir.'}),
+        B('check',{v:'Leí y firmé el código de ética y confidencialidad\nConozco el organigrama del centro y a mi coordinador directo\nRecibí credencial y uniforme\nTengo acceso al aula y al material didáctico\nIdentifiqué baños, patio, botiquín y salidas de emergencia'})
+      ]
+    }),
+
+    /* ---------- 2 ---------- */
+    M({
+      t:'El rol del asistente: funciones y límites', d:30, open:false,
+      obj:'Distinguir las funciones del asistente respecto a la educadora titular\nIdentificar los límites de responsabilidad del puesto\nOrganizar el tiempo de trabajo en aula',
+      blocks:[
+        B('text',{v:'El asistente de educación preescolar no es un apoyo genérico: es un profesional que sostiene el aula junto con la educadora titular. Su trabajo se mide en pequeñas acciones constantes: anticipar, acompañar, observar y registrar.\n\nLa educadora diseña, planea y evalúa. El asistente ejecuta, acompaña y retroalimenta. Esta división no es jerárquica en valor, es funcional en responsabilidad.'}),
+        B('steps',{v:'Llegar 20 minutos antes que los niños para preparar el aula\nRevisar con la educadora el pizarrón de planeación del día\nRecibir a los niños en la puerta con saludo personalizado\nApoyar en actividades dirigidas y en el juego libre\nAcompañar traslados, comida, higiene y descanso\nRegistrar observaciones del día en la bitácora del grupo\nCoordinar con la educadora al cierre de la jornada'}),
+        B('check',{v:'Sé qué NO me corresponde hacer sin supervisión\nConozco mi horario y el de la educadora titular\nTengo claro a quién reportar una incidencia\nConozco el conducto regular: educadora, coordinación, dirección'}),  
+        B('quiz',{
+          q:'El asistente detecta que un niño tiene fiebre durante la clase. ¿Qué hace?',
+          v:'Lo manda a casa por su cuenta\nInforma de inmediato a la educadora y a enfermería\nEspera al final de la jornada para comentarlo',
+          ans:2
+        })
+      ]
+    }),
+
+    /* ---------- 3 ---------- */
+    M({
+      t:'Desarrollo infantil de 3 a 6 años', d:40, open:false,
+      obj:'Describir características del desarrollo físico, cognitivo, social y emocional por edad\nAnticipar necesidades e intereses típicos de cada grupo\nDetectar señales de alerta tempranas',
+      blocks:[
+        B('text',{v:'A los 3 años: el niño está saliendo del egocentrismo, juega en paralelo más que en grupo y su autonomía es limitada. Requiere supervisión cercana en higiene y alimentación.\n\nA los 4 años: comienza el juego cooperativo y aparecen las primeras reglas compartidas. Su lenguaje explota: pregunta todo. Necesita ser escuchado.\n\nA los 5 años: aparece el juego simbólico complejo, la capacidad de esperar turnos y el interés por la lectoescritura. Puede seguir instrucciones de varios pasos.\n\nA los 6 años: transición a primaria. Mayor autorregulación, conciencia de reglas y deseo de pertenecer al grupo.'}),
+        B('note',{tone:'warn',v:'Ningún niño sigue un calendario exacto. Las edades son referencias, no diagnósticos. Ante dudas, observa y consulta; no etiquetes.'}),
+        B('check',{v:'Llanto persistente sin causa aparente por más de dos semanas\nRegresión en control de esfínteres o en lenguaje\nAislamiento sostenido del grupo\nAgresividad frecuente hacia otros niños\nPérdida de apetito o sueño alterado\nDificultad motriz marcada respecto al grupo'}),
+        B('quiz',{
+          q:'Un niño de 4 años aún no controla esfínteres. ¿Cuál es la acción correcta del asistente?',
+          v:'Regañarlo para que aprenda\nRegistrar la observación y consultar con la educadora\nDecirle a la familia que el niño tiene un problema',
+          ans:2
+        })
+      ]
+    }),
+
+    /* ---------- 4 ---------- */
+    M({
+      t:'Rutina diaria y organización del aula', d:35, open:false,
+      obj:'Ejecutar la rutina diaria según los tiempos establecidos\nPreparar el aula antes de la llegada de los niños\nAplicar transiciones entre actividades sin conflictos',
+      blocks:[
+        B('steps',{v:'7:30 Recepción y saludo en la puerta\n7:45 Asamblea de bienvenida y calendario\n8:15 Actividad dirigida 1\n9:00 Higiene y colación\n9:30 Patio y juego libre\n10:15 Actividad dirigida 2 o talleres\n11:00 Comida\n11:45 Higiene y cepillado\n12:00 Siesta o descanso tranquilo\n12:45 Actividad de cierre y orden\n13:15 Preparación de salida y entrega'}),
+        B('text',{v:'Las transiciones son los momentos más frágiles del día. Un niño que no sabe qué va a pasar, se resiste. Anticipa siempre en voz alta lo que sigue: "En cinco minutos guardamos los bloques y vamos al patio".\n\nUsa canciones, señales visuales o rutinas cortas como anclaje. Repite la misma secuencia cada día. La previsibilidad da seguridad.'}),
+        B('check',{v:'Mesas y sillas limpias y ordenadas\nMaterial didáctico del día preparado y accesible\nPizarrón o rotafolio listo\nBaño con papel, jabón y toallas\nBotiquín completo y a la vista\nRegistro de asistencia impreso'})
+      ]
+    }),
+
+    /* ---------- 5 ---------- */
+    M({
+      t:'Seguridad, higiene y primeros auxilios', d:35, open:false,
+      obj:'Aplicar protocolos de higiene del aula y de los niños\nEjecutar el protocolo de accidentes y primeros auxilios básicos\nActuar correctamente ante emergencias',
+      blocks:[
+        B('steps',{v:'Ante cualquier accidente, avisa de inmediato a la educadora y a enfermería\nAtiende primero al niño: contención verbal y física\nNo muevas al niño si sospechas lesión de cuello o espalda\nAplica primeros auxilios básicos si estás certificado\nRegistra el incidente en el formato de incidencias\nInforma a la familia por el canal oficial\nRevisa el área para evitar que se repita'}),
+        B('note',{tone:'warn',v:'NUNCA administres medicamentos sin indicación médica escrita y autorización firmada de la familia. Ni "una pastillita para el dolor".'}),
+        B('check',{v:'Lavado de manos antes y después de cada cambio de pañal o baño\nHigiene de superficies y juguetes al menos dos veces al día\nVentilación del aula cada 90 minutos\nCambio de pañal cada 2-3 horas o ante necesidad\nUso de guantes en manejo de fluidos'}),
+        B('quiz',{
+          q:'Un niño se cae del columpio y llora fuerte. ¿Qué haces primero?',
+          v:'Lo levanto rápido y lo llevo al aula\nLo dejo quieto, lo calmo con voz y aviso a enfermería\nLe doy agua y sigo con la clase',
+          ans:2
+        })
+      ]
+    }),
+
+    /* ---------- 6 ---------- */
+    M({
+      t:'Acompañamiento socioemocional y buen trato', d:40, open:false,
+      obj:'Aplicar estrategias de contención emocional ante berrinches o crisis\nReconocer y nombrar emociones con los niños\nImplementar disciplina positiva sin castigos',
+      blocks:[
+        B('text',{v:'Un berrinche no es un ataque personal. Es la única forma que tiene un niño de 3 a 5 años de decir "algo me está rebasando".\n\nTu trabajo no es detener el llanto: es acompañarlo sin perder la calma. Un adulto regulado regula. Un adulto alterado desregula más.'}),
+        B('steps',{v:'Baja a la altura del niño: rodillas o sentado\nHabla en voz baja y lenta\nNombra la emoción: "Veo que estás muy enojado porque no pudiste usar el triciclo"\nOfrece opciones limitadas: "¿Quieres un abrazo o prefieres un momento solo?"\nEspera sin presionar\nCuando esté calmado, retoma la actividad\nRegistra si se repite con frecuencia'}),
+        B('note',{tone:'tip',v:'Disciplina positiva significa firmeza con respeto. Puedes decir "no" con claridad y sin gritar. Los límites dan seguridad, los castigos dan miedo.'}),
+        B('check',{v:'Uso lenguaje descriptivo, no etiquetas ("estás enojado", no "eres un grosero")\nNo comparo niños entre sí\nNunca uso castigos físicos, humillación ni aislamiento prolongado\nReconozco el esfuerzo, no solo el resultado\nPido apoyo cuando yo mismo estoy desbordado'})
+      ]
+    }),
+
+    /* ---------- 7 ---------- */
+    M({
+      t:'Protección infantil y protocolos críticos', d:30, open:false,
+      obj:'Identificar señales de maltrato, abuso o negligencia\nAplicar la ruta institucional de actuación ante sospecha\nComprender el deber de confidencialidad y no intervención directa',
+      blocks:[
+        B('note',{tone:'danger',v:'Ante cualquier señal de maltrato, abuso o negligencia: NO investigues, NO confrontes a la familia, NO prometas secreto al niño. Sigue la ruta institucional. Este es un protocolo legal, no una decisión personal.'}),
+        B('steps',{v:'Escucha al niño sin inducir respuestas. No interrogues\nRegistra textualmente lo que dijo, con fecha y hora, en el formato oficial\nInforma el mismo día a la dirección académica\nLa dirección activa la ruta con la autoridad correspondiente\nGuarda absoluta confidencialidad con el resto del equipo\nDa seguimiento al bienestar del niño dentro del aula'}),
+        B('text',{v:'Señales que deben alertarte: hematomas en zonas no típicas de juego (espalda, glúteos, muslos internos, orejas), miedo repentino a una persona o al baño, lenguaje sexual no apropiado para la edad, retroceso brusco en hábitos adquiridos, o relatos repetidos de situaciones de violencia.\n\nNo todas las señales indican abuso. Pero todas exigen registro y consulta.'}),
+        B('check',{v:'Conozco el nombre y contacto del responsable de protección infantil\nSé dónde está el formato de registro oficial\nTengo claro que mi deber es reportar, no investigar\nNunca hablo de estos casos fuera del canal institucional'})
+      ]
+    }),
+
+    /* ---------- 8 ---------- */
+    M({
+      t:'Estrategias pedagógicas y materiales', d:45, open:false,
+      obj:'Preparar materiales didácticos apropiados por edad\nAcompañar actividades dirigidas y juego libre\nFomentar la autonomía y el pensamiento crítico',
+      blocks:[
+        B('text',{v:'El juego es el trabajo del niño. Todo lo que enseñes pasa mejor por el juego, el cuerpo y la manipulación de objetos que por la explicación verbal.\n\nA los 3-4 años: material concreto, colores vivos, texturas, canciones con movimiento.\nA los 5-6 años: materiales que reten la lógica, secuencias, clasificaciones, pequeños proyectos de varios días.'}),
+        B('steps',{v:'Revisa la planeación de la educadora antes de preparar material\nVerifica que el material sea seguro: sin puntas, sin piezas menores a 3 cm\nPrepara una estación más de la que crees necesaria\nPresenta la actividad con una demostración breve, no con discurso\nAcompaña sin dirigir: pregunta en vez de resolver\nDeja que el error suceda y acompáñalo\nRecoge con los niños, no por los niños'}),
+        B('check',{v:'Material acorde a la edad y sin riesgo de asfixia\nEspacios distribuidos por zonas (lectura, construcción, arte, movimiento)\nRotación de materiales cada 2-3 semanas\nRincón de autonomía: agua, pañuelos, materiales de limpieza accesibles\nNada tóxico, nada roto, nada punzante'}),
+        B('note',{tone:'tip',v:'Una buena pregunta vale más que diez explicaciones. "¿Qué crees que pasaría si...?" abre más cabezas que "esto es así".'})
+      ]
+    }),
+
+    /* ---------- 9 ---------- */
+    M({
+      t:'Patio y juego libre', d:25, open:false,
+      obj:'Organizar el tiempo de patio con seguridad\nAcompañar el juego libre sin dirigirlo\nPrevenir accidentes en exterior',
+      blocks:[
+        B('steps',{v:'Revisar el área antes de salir: huecos, piedras, objetos, agua\nContar a los niños al salir y al entrar\nUbicarse en el punto con mayor visibilidad, no en una esquina\nIntervenir solo ante riesgo real, no ante conflicto normal\nAnticipar el regreso 5 minutos antes\nVerificar que nadie se quede atrás'}),
+        B('check',{v:'Sombra disponible para días calurosos\nAgua accesible para todos\nSupervisión proporcional: 1 adulto por cada 10-15 niños\nRopa y calzado adecuados para correr\nBotiquín portátil en el patio'}),
+        B('note',{tone:'warn',v:'Nunca dejes a un grupo al aire libre bajo la supervisión de un solo adulto si hay más de 12 niños. Si tienes que salir del patio, avisa y espera relevo.'})
+      ]
+    }),
+
+    /* ---------- 10 ---------- */
+    M({
+      t:'Comunicación con familias', d:30, open:false,
+      obj:'Aplicar el protocolo de entrega y recepción de niños\nComunicar observaciones del día con lenguaje respetuoso\nDerivar consultas a la educadora titular o dirección',
+      blocks:[
+        B('steps',{v:'Recibe al niño con saludo personal y toma nota de indicaciones de la familia\nAl final del día entrega un reporte breve: estado general, comidas, ánimo, algo destacable\nAnte una queja, escucha completa antes de responder\nDeriva cualquier tema pedagógico o de salud a la educadora o dirección\nRegistra en bitácora cualquier indicación relevante'}),
+        B('note',{tone:'info',v:'Tu tono con la familia modela la relación. Habla del niño con respeto incluso cuando hay que decir algo difícil. "Hoy tuvo un día complicado" abre más puertas que "hoy se portó mal".'}),
+        B('check',{v:'Nunca comparto información de otros niños con una familia\nNo doy diagnósticos ni recomendaciones médicas\nNo comunico temas por canales personales (WhatsApp privado)\nUso el canal oficial y el horario establecido'}),
+        B('quiz',{
+          q:'Una mamá te pregunta si su hijo "tiene algún problema de lenguaje". ¿Qué respondes?',
+          v:'Le doy mi opinión como asistente\nLe digo que consultaré con la educadora y le respondemos por el canal oficial\nLe digo que no sé nada',
+          ans:2
+        })
+      ]
+    }),
+
+    /* ---------- 11 ---------- */
+    M({
+      t:'Alimentación y descanso', d:25, open:false,
+      obj:'Acompañar la hora de la comida fomentando hábitos saludables\nAplicar protocolo ante alergias y restricciones alimentarias\nOrganizar el tiempo de siesta respetando ritmos',
+      blocks:[
+        B('text',{v:'La hora de la comida y la siesta son momentos pedagógicos, no pausas operativas. Ahí también se enseña.'}),
+        B('note',{tone:'danger',v:'Antes de cualquier comida revisa la lista de alergias del grupo. Un error puede costar la vida de un niño. Verifica etiquetas cada día, incluso si el menú es el mismo.'}),
+        B('steps',{v:'Verifica el listado de alergias y restricciones del grupo\nAntes de servir, confirma el menú con cocina\nSirve porciones apropiadas a la edad\nSiéntate con los niños, no te quedes de pie\nModela hábitos: cubiertos, agua, ritmo tranquilo\nAnte atragantamiento, aplica maniobra de Heimlich y avisa de inmediato'}),
+        B('check',{v:'Agua disponible para todos\nMenú publicado visible en el aula\nAlergias señalizadas en lugar visible\nColchonetas limpias y separadas\nSala ventilada y en penumbra para siesta\nNiños con sueño ligero ubicados donde puedan descansar'})
+      ]
+    }),
+
+    /* ---------- 12 ---------- */
+    M({
+      t:'Observación y trabajo en equipo', d:35, open:false,
+      obj:'Registrar observaciones objetivas del desarrollo\nComunicar avances y necesidades a la educadora titular\nParticipar en reuniones de equipo con aportes concretos',
+      blocks:[
+        B('text',{v:'Observar no es opinar. Es registrar hechos, con fecha, contexto y conducta observable.\n\n"Es agresivo" no es una observación. "El martes a las 10:15, durante el juego libre, empujó a dos compañeros cuando intentaron usar los bloques" sí lo es.'}),
+        B('steps',{v:'Observa en distintos momentos del día, no solo en los difíciles\nAnota al momento, no al final del día\nRegistra hechos, no interpretaciones\nComparte observaciones en la reunión semanal con la educadora\nPropón ajustes concretos, no diagnósticos\nMantén la bitácora actualizada'}),
+        B('check',{v:'Tengo bitácora diaria al día\nAsistí a la reunión semanal de equipo\nCompartí al menos una observación útil por semana\nMis registros son respetuosos y sin etiquetas'}),
+        B('quiz',{
+          q:'¿Cuál de estas frases es una observación profesional?',
+          v:'El niño es desordenado\nDurante la actividad de arte tiró el material dos veces sin intención aparente\nNo es un niño fácil',
+          ans:2
+        })
+      ]
+    })
+
+  ]
+});
+
+/* Estado */
+const load = () => {
+  try{
+    const r = localStorage.getItem(KEY);
+    if(r){
+      const d = JSON.parse(r);
+      if(d && d.meta && Array.isArray(d.mods)) return d;
+    }
+  }catch(e){}
+  return seed();
+};
+let S = load();
+let tab = 'meta';
+let last = null;
+let tt;
+
+const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const snap = () => { last = JSON.stringify(S); };
+const find = id => S.mods.find(m => m.id === id);
+const mv = (a, i, d) => {
+  const j = i + d;
+  if(i < 0 || i >= a.length || j < 0 || j >= a.length) return;
+  [a[i], a[j]] = [a[j], a[i]];
+};
+const total = () => S.mods.reduce((a, m) => a + (Number(m.d) || 0), 0);
+
+/* Progreso */
+const prog = () => {
+  let ok = 0, n = 0;
+  const c = x => { n++; if(x) ok++; };
+  const m = S.meta;
+  [m.title, m.author, m.aud, m.goal].forEach(x => c(String(x).trim()));
+  S.mods.forEach(x => {
+    c(String(x.t || '').trim());
+    c(L(x.obj).length);
+    c(x.blocks.length && x.blocks.every(b => String(b.v || '').trim()));
+  });
+  return n ? Math.round(ok/n*100) : 0;
+};
+
+/* Bloque de stats */
+const stH = () => {
+  const p = prog();
+  const bl = S.mods.reduce((a, m) => a + m.blocks.length, 0);
+  return `
+    <div class="stats">
+      <div class="stat"><b>${S.mods.length}</b><span>Módulos</span></div>
+      <div class="stat"><b>${total()}</b><span>Minutos</span></div>
+      <div class="stat"><b>${bl}</b><span>Bloques</span></div>
+    </div>
+    <div class="pl"><span>Manual completo</span><b>${p}%</b></div>
+    <div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100">
+      <i style="width:${p}%"></i>
+    </div>`;
+};
+const stats = () => { const e = $('#st'); if(e) e.innerHTML = stH(); };
+
+/* Campo genérico — recibe atributos extra vía opts.attrs */
+const fld = (l, f, v, opts = {}) => {
+  const attrs = opts.attrs || '';
+  return `<label>${l}</label>` + (opts.ta
+    ? `<textarea data-f="${f}" ${attrs}>${esc(v)}</textarea>`
+    : `<input data-f="${f}" value="${esc(v)}" ${attrs} autocomplete="off">`);
+};
+
+/* ============================================================
+   Vistas
+   ============================================================ */
+
+function vMeta(){
+  const m = S.meta;
+  return `
+  <section class="card">
+    <h2 class="t">Avance del manual</h2>
+    <p class="sub">Se completa al llenar los datos y dar contenido a cada módulo.</p>
+    <div id="st">${stH()}</div>
+  </section>
+
+  <section class="card">
+    <h2 class="t">Datos generales</h2>
+    <p class="sub">Aparecen en la portada del manual.</p>
+    ${fld('Título', 'title', m.title)}
+    ${fld('Subtítulo', 'sub', m.sub)}
+    <div class="row">
+      <div>${fld('Autor o área', 'author', m.author)}</div>
+      <div>${fld('Versión', 'ver', m.ver)}</div>
+    </div>
+    ${fld('Audiencia', 'aud', m.aud)}
+    <label>Nivel</label>
+    <div class="seg">
+      ${LV.map(l => `<button type="button" class="btn sm ${m.level === l ? 'on' : ''}" data-a="lvl" data-v="${l}">${l}</button>`).join('')}
+    </div>
+    ${fld('Objetivo general', 'goal', m.goal, { ta:1 })}
+  </section>
+
+  <section class="card">
+    <h2 class="t">Empezar de nuevo</h2>
+    <p class="sub">Puedes deshacer estas acciones justo después.</p>
+    <div class="row">
+      <button type="button" class="btn" data-a="sample">Cargar ejemplo</button>
+      <button type="button" class="btn dg" data-a="blank">Manual en blanco</button>
+    </div>
+  </section>`;
+}
+
+/* --- Editor de bloque --- */
+const bEd = (m, b) => {
+  const d = `data-m="${m.id}" data-b="${b.id}"`;
+  const ta = p => `<textarea data-f="v" ${d} placeholder="${p}">${esc(b.v)}</textarea>`;
+  let f;
+
+  if(b.k === 'note'){
+    f = `<div class="seg">${Object.keys(TONE).map(k =>
+      `<button type="button" class="btn sm ${b.tone === k ? 'on' : ''}" data-a="tone" data-v="${k}" ${d}>${TONE[k]}</button>`
+    ).join('')}</div>` + ta('Mensaje que quieres destacar');
+  } else if(b.k === 'quiz'){
+    f = `<input data-f="q" ${d} value="${esc(b.q)}" placeholder="Escribe la pregunta" autocomplete="off">`
+      + ta('Una opción por línea')
+      + `<label>Número de la opción correcta</label>`
+      + `<input type="number" inputmode="numeric" min="1" data-f="ans" ${d} value="${b.ans}">`;
+  } else {
+    f = ta({
+      text:'Escribe el contenido. Una línea en blanco separa párrafos.',
+      steps:'Un paso por línea',
+      check:'Un elemento por línea'
+    }[b.k]);
+  }
+
+  const bt = (a, i, c='') =>
+    `<button type="button" class="btn sm rd ${c}" data-a="${a}" ${d} aria-label="${a}">${ic(i)}</button>`;
+
+  return `
+  <div class="blk">
+    <div class="bh">
+      <span class="tag">${KIND[b.k]}</span>
+      <span>${bt('upb','up')}${bt('dnb','down')}${bt('delb','trash','dg')}</span>
+    </div>
+    ${f}
+  </div>`;
+};
+
+/* --- Editor de módulo --- */
+const mEd = (m, i) => `
+  <article class="card ${m.open ? 'open' : ''}">
+    <div class="mh" data-a="tg" data-m="${m.id}" role="button" tabindex="0" aria-expanded="${!!m.open}">
+      <span class="num">${i+1}</span>
+      <div>
+        <b id="mt${m.id}">${esc(m.t) || 'Sin título'}</b>
+        <small>${m.blocks.length} bloques · ${m.d} min</small>
+      </div>
+      <span class="chev">${ic('down')}</span>
+    </div>
+    <div class="mb">
+      ${fld('Título del módulo', 't', m.t, { attrs:`data-m="${m.id}"` })}
+      <label>Duración en minutos</label>
+      <input type="number" inputmode="numeric" min="0" data-m="${m.id}" data-f="d" value="${m.d}">
+      <label>Objetivos de aprendizaje (uno por línea)</label>
+      <textarea data-m="${m.id}" data-f="obj">${esc(m.obj)}</textarea>
+
+      <label>Contenido</label>
+      ${m.blocks.map(b => bEd(m, b)).join('') ||
+        '<p class="empty">Sin bloques todavía. Agrega el primero abajo.</p>'}
+
+      <div class="add">
+        ${Object.keys(KIND).map(k =>
+          `<button type="button" class="btn sm pr" data-a="addb" data-k="${k}" data-m="${m.id}">
+            ${ic('plus')}${KIND[k]}
+          </button>`
+        ).join('')}
+      </div>
+
+      <div class="ma">
+        <button type="button" class="btn sm rd" data-a="upm" data-m="${m.id}" aria-label="Subir módulo">${ic('up')}</button>
+        <button type="button" class="btn sm rd" data-a="dnm" data-m="${m.id}" aria-label="Bajar módulo">${ic('down')}</button>
+        <button type="button" class="btn sm" data-a="dupm" data-m="${m.id}">${ic('copy')}Duplicar</button>
+        <button type="button" class="btn sm dg" data-a="delm" data-m="${m.id}">${ic('trash')}Eliminar</button>
+      </div>
+    </div>
+  </article>`;
+
+const vMods = () => `
+  <section class="card"><div id="st">${stH()}</div></section>
+  ${S.mods.map(mEd).join('') ||
+    '<p class="empty">Aún no hay módulos. Crea el primero para empezar a estructurar tu manual.</p>'}
+  <button type="button" class="btn pr w" data-a="addm">${ic('plus')}Agregar módulo</button>`;
+
+/* --- Render de bloque en vista previa --- */
+const bPre = b => {
+  const l = L(b.v);
+  switch(b.k){
+    case 'text':
+      return String(b.v).split(/\n\s*\n/).filter(x => x.trim())
+        .map(p => `<p>${esc(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
+    case 'steps':
+      return `<ol>${l.map(x => `<li>${esc(x)}</li>`).join('')}</ol>`;
+    case 'check':
+      return `<ul class="ck">${l.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+    case 'note':
+      return `<div class="co ${b.tone}"><b>${TONE[b.tone] || TONE.info}</b>${esc(b.v)}</div>`;
+    case 'quiz':
+      return `<div class="qz"><b>${esc(b.q || 'Pregunta')}</b>${
+        l.map((x,i) => `<div class="op ${i+1 == b.ans ? 'ok' : ''}"><i>${AZ[i] || i+1}</i>${esc(x)}</div>`).join('')
+      }</div>`;
+  }
+  return '';
+};
+
+function vPrev(){
+  const m = S.meta;
+  return `
+  <div class="tools">
+    <button type="button" class="btn pr" data-a="print">${ic('print')}Imprimir o guardar PDF</button>
+    <button type="button" class="btn" data-a="copy">${ic('copy')}Copiar en Markdown</button>
+  </div>
+
+  <article class="paper">
+    <div class="cover">
+      <small>Manual de capacitación · versión ${esc(m.ver)}</small>
+      <h1>${esc(m.title) || 'Manual sin título'}</h1>
+      <p>${esc(m.sub)}</p>
+      <div class="mg">
+        <div><span>Autor</span>${esc(m.author) || '—'}</div>
+        <div><span>Audiencia</span>${esc(m.aud) || '—'}</div>
+        <div><span>Nivel</span>${esc(m.level)}</div>
+        <div><span>Duración total</span>${dur(total())}</div>
+      </div>
+    </div>
+
+    ${String(m.goal || '').trim() ? `<h2>Objetivo general</h2><p>${esc(m.goal)}</p>` : ''}
+
+    <h2>Contenido</h2>
+    <ol class="toc">
+      ${S.mods.map(x => `<li>${esc(x.t)}<em>${dur(x.d)}</em></li>`).join('')}
+    </ol>
+
+    ${S.mods.map((x,i) => `
+      <section>
+        <h2><i>${i+1}</i>${esc(x.t)}</h2>
+        ${L(x.obj).length
+          ? `<div class="co"><b>Al terminar podrás</b><ul>${L(x.obj).map(o => `<li>${esc(o)}</li>`).join('')}</ul></div>`
+          : ''}
+        ${x.blocks.map(bPre).join('')}
+      </section>`).join('')}
+  </article>`;
+}
+
+/* --- Markdown --- */
+const bMd = b => {
+  const l = L(b.v);
+  return {
+    text: b.v.trim(),
+    steps: l.map((x,i) => `${i+1}. ${x}`).join('\n'),
+    check: l.map(x => `- [ ] ${x}`).join('\n'),
+    note: `> **${TONE[b.tone] || TONE.info}:** ${b.v.trim()}`,
+    quiz: `**Pregunta:** ${b.q}\n\n${l.map((x,i) => `${AZ[i] || i+1}) ${x}`).join('\n')}\n\n_Respuesta correcta: ${AZ[b.ans-1] || b.ans}_`
+  }[b.k];
+};
+
+const md = () => {
+  const m = S.meta;
+  let o = `# ${m.title}\n\n_${m.sub}_\n\n**Autor:** ${m.author} · **Versión:** ${m.ver} · **Nivel:** ${m.level}\n**Audiencia:** ${m.aud}\n\n## Objetivo general\n${m.goal}\n`;
+  S.mods.forEach((x,i) => {
+    o += `\n## ${i+1}. ${x.t}\n_Duración: ${x.d} min_\n\n`;
+    if(L(x.obj).length) o += `**Objetivos**\n${L(x.obj).map(t => `- ${t}`).join('\n')}\n\n`;
+    o += x.blocks.map(bMd).join('\n\n') + '\n';
+  });
+  return o;
+};
+
+/* --- Portapapeles --- */
+const cp = async t => {
+  try{ await navigator.clipboard.writeText(t); return 1; }
+  catch(e){
+    try{
+      const a = document.createElement('textarea');
+      a.value = t;
+      document.body.appendChild(a);
+      a.select();
+      const r = document.execCommand('copy');
+      a.remove();
+      return r;
+    }catch(x){ return 0; }
+  }
+};
+
+/* --- Toast --- */
+const toast = (m, u) => {
+  const t = $('#ts');
+  t.innerHTML = esc(m) + (u ? ' <button type="button" class="btn sm pr" data-a="undo">Deshacer</button>' : '');
+  t.classList.add('on');
+  clearTimeout(tt);
+  tt = setTimeout(() => t.classList.remove('on'), u ? 6000 : 2400);
+};
+
+/* --- Estado de tema --- */
+const isDarkNow = () => {
+  const root = document.documentElement;
+  return root.dataset.theme === 'dark' ||
+    (!root.dataset.theme && matchMedia('(prefers-color-scheme:dark)').matches);
+};
+
+/* --- Chrome (nav + header) --- */
+function chrome(){
+  document.querySelectorAll('.ni button').forEach((b,i) => {
+    const n = ['book','layers','eye'][i];
+    const t = ['Datos','Módulos','Vista'][i];
+    b.innerHTML = ic(n) + t;
+    b.classList.toggle('on', b.dataset.v === tab);
+  });
+  $('#lg').innerHTML = ic('book');
+
+  const dark = isDarkNow();
+  const btn = $('#th');
+  btn.innerHTML = ic(dark ? 'sun' : 'moon');
+  btn.setAttribute('aria-label', dark ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+  btn.setAttribute('aria-pressed', String(dark));
+}
+
+/* --- Render principal --- */
+function render(){
+  $('#app').innerHTML = tab === 'meta' ? vMeta()
+                    : tab === 'mods' ? vMods()
+                    : vPrev();
+  chrome();
+}
+
+/* ============================================================
+   Eventos
+   ============================================================ */
+document.addEventListener('click', async e => {
+  const t = e.target.closest('[data-a]');
+  if(!t) return;
+
+  const a = t.dataset.a;
+  const m = find(t.dataset.m);
+  const b = m && m.blocks.find(x => x.id === t.dataset.b);
+  const i = S.mods.indexOf(m);
+  const j = m && b ? m.blocks.indexOf(b) : -1;
+
+  switch(a){
+    case 'tab':
+      tab = t.dataset.v;
+      render();
+      window.scrollTo(0,0);
+      return;
+
+    /* ---------- TOGGLE DE TEMA (corregido) ---------- */
+    case 'theme':{
+      const next = isDarkNow() ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try{ localStorage.setItem(THEME_KEY, next); }catch(e){}
+      chrome();          /* refresca el icono al instante */
+      return;
+    }
+
+    case 'print': window.print(); return;
+
+    case 'copy':
+      toast(await cp(md()) ? 'Manual copiado en Markdown' : 'No se pudo copiar. Selecciona el texto manualmente.');
+      return;
+
+    case 'undo':
+      if(last){ S = JSON.parse(last); last = null; save(); render(); toast('Cambio deshecho'); }
+      return;
+
+    case 'lvl':    S.meta.level = t.dataset.v; break;
+    case 'sample': snap(); S = seed(); toast('Ejemplo cargado', 1); break;
+
+    case 'blank':
+      snap();
+      S = { meta:{ title:'', sub:'', author:'', ver:'1.0', aud:'', level:'Básico', goal:'' }, mods:[] };
+      toast('Manual en blanco listo', 1);
+      break;
+
+    case 'addm': S.mods.push(M()); toast('Módulo agregado'); break;
+    case 'tg':   m.open = !m.open; break;
+
+    case 'dupm':{
+      const c = JSON.parse(JSON.stringify(m));
+      c.id = uid();
+      c.t += ' (copia)';
+      c.open = true;
+      c.blocks.forEach(x => x.id = uid());
+      S.mods.splice(i+1, 0, c);
+      break;
+    }
+
+    case 'delm': snap(); S.mods.splice(i,1); toast('Módulo eliminado', 1); break;
+    case 'upm':  mv(S.mods, i, -1); break;
+    case 'dnm':  mv(S.mods, i, 1); break;
+
+    case 'addb': m.blocks.push(B(t.dataset.k)); break;
+    case 'delb': snap(); m.blocks.splice(j,1); toast('Bloque eliminado', 1); break;
+    case 'upb':  mv(m.blocks, j, -1); break;
+    case 'dnb':  mv(m.blocks, j, 1); break;
+    case 'tone': b.tone = t.dataset.v; break;
+
+    default: return;
+  }
+
+  save();
+  render();
+});
+
+/* Enter/Space en cabecera de módulo */
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if(t.classList && t.classList.contains('mh') && (e.key === 'Enter' || e.key === ' ')){
+    e.preventDefault();
+    t.click();
+  }
+});
+
+/* Entrada en directo (autoguardado) */
+document.addEventListener('input', e => {
+  const t = e.target;
+  const f = t.dataset.f;
+  if(!f) return;
+
+  let v;
+  if(t.type === 'number'){
+    v = t.value === '' ? 0 : Math.max(f === 'ans' ? 1 : 0, Math.round(+t.value) || 0);
+  } else {
+    v = t.value;
+  }
+
+  if(t.dataset.m){
+    const m = find(t.dataset.m);
+    if(!m) return;
+    if(t.dataset.b){
+      const b = m.blocks.find(x => x.id === t.dataset.b);
+      if(b) b[f] = v;
+    } else {
+      m[f] = v;
+      if(f === 't'){
+        const h = $('#mt' + m.id);
+        if(h) h.textContent = v || 'Sin título';
+      }
+    }
+  } else {
+    S.meta[f] = v;
+  }
+
+  save();
+  stats();
+});
+
+/* Sincroniza el tema si el usuario cambia la preferencia del sistema en vivo */
+try{
+  matchMedia('(prefers-color-scheme:dark)').addEventListener('change', () => {
+    if(!document.documentElement.dataset.theme) chrome();
+  });
+}catch(e){}
+
+/* Init */
+render();
+</script>
+</body>
+</html>
